@@ -1,0 +1,22 @@
+#!/bin/bash
+# cloud-init user data script for Nginx + static site
+
+# Update packages
+apt update -y
+
+# Install Nginx and unzip
+apt install -y nginx unzip wget
+
+# Download and extract the site
+cd /tmp
+wget -O site.zip https://github.com/StartBootstrap/startbootstrap-new-age/archive/gh-pages.zip
+unzip site.zip
+
+# Deploy to Nginx web root
+rm -rf /var/www/html/*
+cp -r startbootstrap-new-age-gh-pages/* /var/www/html/
+
+
+# Enable and start Nginx
+systemctl enable nginx
+systemctl restart nginx
